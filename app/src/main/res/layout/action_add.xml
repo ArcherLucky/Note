@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 首页点击添加按钮显示的layout -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_add"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_note"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        fabSize="mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_bill"
+        android:src="@drawable/ic_bill"
+        fabSize="mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

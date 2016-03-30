@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CreateNoteActivity"
+            android:label="@string/title_activity_create_note"
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

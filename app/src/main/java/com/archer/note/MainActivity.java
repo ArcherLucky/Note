@@ -1,5 +1,6 @@
 package com.archer.note;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -37,6 +38,26 @@ public class MainActivity extends AppCompatActivity
      * 笔记Fragment
      */
     NoteFragment noteFragment;
+    /**
+     * 添加按钮的动画
+     */
+//    ObjectAnimator anim;
+    /**
+     * 是否弹出添加菜单
+     */
+//    boolean isFabOpen;
+    /**
+     * 增加Note,Bill的Layout
+     */
+//    RelativeLayout actionAdd;
+    /**
+     * 添加Note的Fab
+     */
+//    FloatingActionButton addNoteFab;
+    /**
+     * 添加Bill的Fab
+     */
+//    FloatingActionButton addBillFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +67,26 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+//        anim = ObjectAnimator.ofFloat(fab, "rotation", 0f, 235f);
+//        anim.setDuration(400);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), CreateNoteActivity.class));
+//                isFabOpen = !isFabOpen;
+//                if(!isFabOpen) {
+//                    anim = ObjectAnimator.ofFloat(fab, "rotation", 0f, 180f);
+//                } else {
+//                    anim = ObjectAnimator.ofFloat(fab, "rotation", 0f, -225f);
+//                }
+//                anim.start();
+
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
         });
 
-         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -70,6 +102,10 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(android.R.id.home, noteFragment);
         fragmentTransaction.commit();
+
+//        actionAdd = (RelativeLayout) findViewById(R.id.ll_add);
+//        addNoteFab = (FloatingActionButton) findViewById(R.id.fab_add_note);
+//        addBillFab = (FloatingActionButton) findViewById(R.id.fab_add_bill);
 
     }
 

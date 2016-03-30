@@ -1,5 +1,6 @@
 package com.archer.note;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -39,6 +42,36 @@ public class CreateNoteActivity extends AppCompatActivity {
         contentLayout = (TextInputLayout) findViewById(R.id.til_content);
         contentEdit = (EditText) findViewById(R.id.et_content);
         contentEdit.addTextChangedListener(new MyTextWatcher(contentEdit));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.create_note, menu);
+        MenuItem menuItem = toolbar.getMenu().getItem(1);
+        menuItem.setActionView(findViewById(R.id.action_done));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                break;
+            case R.id.action_save:
+                View view = toolbar.findViewById(R.id.action_save);
+                ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+                animator.setDuration(2000);
+                animator.start();
+                break;
+            case R.id.action_done:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean validateTitle() {

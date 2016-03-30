@@ -3,19 +3,23 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_note"
             android:icon="@drawable/ic_note"
             android:title="@string/my_note" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_bill"
             android:icon="@drawable/ic_bill"
             android:title="@string/my_bill" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_draft"
+            android:icon="@drawable/ic_draft"
+            android:title="@string/my_draft" />
+        <item
+            android:id="@+id/nav_night"
             android:icon="@drawable/ic_night"
             android:title="@string/night_mode" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_setting"
             android:icon="@drawable/ic_setting"
             android:title="@string/settings" />
     </group>

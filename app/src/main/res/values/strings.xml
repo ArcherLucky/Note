@@ -12,7 +12,8 @@
     <string name="night_mode">夜晚</string>
     <string name="send">发送</string>
     <string name="share">分享</string>
-    <string name="note_title">笔记标题</string>
+    <string name="note_title">标题</string>
+    <string name="note_content">内容</string>
     <string name="title_activity_create_note">创建新笔记</string>
     <string name="title_error">标题不能为空呢</string>
     <string name="content_error">内容不能为空呢</string>

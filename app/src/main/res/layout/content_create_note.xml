@@ -37,7 +37,7 @@
         <EditText
             android:id="@+id/et_content"
             android:gravity="left|top"
-            android:hint="@string/note_title"
+            android:hint="@string/note_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

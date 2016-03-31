@@ -1,6 +1,5 @@
 package com.archer.note;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -48,8 +47,6 @@ public class CreateNoteActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_note, menu);
-        MenuItem menuItem = toolbar.getMenu().getItem(1);
-        menuItem.setActionView(findViewById(R.id.action_done));
         return true;
     }
 
@@ -63,12 +60,10 @@ public class CreateNoteActivity extends AppCompatActivity {
             case R.id.action_settings:
                 break;
             case R.id.action_save:
-                View view = toolbar.findViewById(R.id.action_save);
-                ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
-                animator.setDuration(2000);
-                animator.start();
-                break;
-            case R.id.action_done:
+//                View view = toolbar.findViewById(R.id.action_save);
+//                ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+//                animator.setDuration(200);
+//                animator.start();
                 break;
         }
         return super.onOptionsItemSelected(item);

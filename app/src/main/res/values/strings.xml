@@ -17,7 +17,13 @@
     <string name="title_activity_create_note">创建新笔记</string>
     <string name="title_error">标题不能为空呢</string>
     <string name="content_error">内容不能为空呢</string>
+    <string name="action_edit">编辑</string>
     <string name="action_save">保存</string>
-    <string name="action_done">保存</string>
+
+    <!-- 默认的笔记类别 -->
+    <string name="default_note_type">默认</string>
+
+    <!-- 数据库操作提示信息 -->
+    <string name="category_already_exists">已经存在这个类别</string>
 
 </resources>

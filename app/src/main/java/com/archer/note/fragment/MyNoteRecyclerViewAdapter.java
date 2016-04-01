@@ -1,6 +1,7 @@
 package com.archer.note.fragment;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.archer.note.R;
+import com.archer.note.db.Note;
 import com.archer.note.fragment.NoteFragment.OnListFragmentInteractionListener;
-import com.archer.note.model.Note;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class MyNoteRecyclerViewAdapter extends RecyclerView.Adapter<MyNoteRecycl
     private final List<Note> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyNoteRecyclerViewAdapter(List<Note> items, OnListFragmentInteractionListener listener) {
+    public MyNoteRecyclerViewAdapter(@NonNull List<Note> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -34,7 +35,7 @@ public class MyNoteRecyclerViewAdapter extends RecyclerView.Adapter<MyNoteRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
+        holder.mIdView.setText(mValues.get(position).getTitle());
         holder.mContentView.setText(mValues.get(position).getTextContent());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

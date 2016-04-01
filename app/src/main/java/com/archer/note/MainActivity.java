@@ -9,16 +9,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.archer.note.constant.Constant;
+import com.archer.note.db.Note;
 import com.archer.note.fragment.NoteFragment;
-import com.archer.note.model.Note;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, NoteFragment.OnListFragmentInteractionListener {
 
     /**
@@ -72,7 +72,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), CreateNoteActivity.class));
+                Intent intent = getNoteIntent(CreateNoteActivity.class, Constant.ACTION_CHANGE_NOTE);
+                startActivityForResult(intent, 0);
 //                isFabOpen = !isFabOpen;
 //                if(!isFabOpen) {
 //                    anim = ObjectAnimator.ofFloat(fab, "rotation", 0f, 180f);
@@ -116,6 +117,12 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        noteFragment.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -167,6 +174,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Note item, int position) {
-
+        Intent intent = getNoteIntent(CreateNoteActivity.class, Constant.ACTION_CHANGE_NOTE);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constant.ACTION_CHANGE_NOTE, item);
+        intent.putExtra(Constant.ACTION_CHANGE_NOTE, bundle);
+        startActivityForResult(intent, 0);
     }
 }

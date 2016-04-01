@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".NoteApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -21,7 +22,6 @@
         <activity
             android:name=".CreateNoteActivity"
             android:label="@string/title_activity_create_note"
-            android:windowSoftInputMode="stateVisible|adjustPan"
             android:theme="@style/AppTheme" />
     </application>
 

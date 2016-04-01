@@ -1,6 +1,8 @@
 package com.archer.note.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,9 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.archer.note.R;
-import com.archer.note.model.Note;
+import com.archer.note.constant.Constant;
+import com.archer.note.db.Note;
+import com.archer.note.db.NoteDB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +30,9 @@ public class NoteFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+
+    MyNoteRecyclerViewAdapter myNoteRecyclerViewAdapter;
+    List<Note> noteList;
 
     public NoteFragment() {
     }
@@ -52,16 +58,8 @@ public class NoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_list, container, false);
-        List noteList = new ArrayList();
-        for(int i = 0; i < 100; i++) {
-            Note note = new Note();
-            note.setId(i);
-            note.setName("My name is Note");
-            note.setTextContent("This is my intro");
-            noteList.add(note);
-        }
+        noteList = NoteDB.getAllNote();
 
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -70,11 +68,24 @@ public class NoteFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyNoteRecyclerViewAdapter(noteList, mListener));
+
+            myNoteRecyclerViewAdapter = new MyNoteRecyclerViewAdapter(noteList, mListener);
+            recyclerView.setAdapter(myNoteRecyclerViewAdapter);
         }
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 0:
+                if (resultCode == Activity.RESULT_OK) {
+                    noteList.add((Note) data.getBundleExtra(Constant.ACTION_CHANGE_NOTE).getParcelable(Constant.ACTION_CHANGE_NOTE));
+                    myNoteRecyclerViewAdapter.notifyItemInserted(noteList.size() - 1);
+                }
+        }
+    }
 
     @Override
     public void onAttach(Context context) {

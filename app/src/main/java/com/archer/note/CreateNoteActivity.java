@@ -1,6 +1,5 @@
 package com.archer.note;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -12,9 +11,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.archer.note.constant.Constant;
@@ -26,6 +23,8 @@ import com.archer.note.db.NoteDB;
  */
 public class CreateNoteActivity extends AppCompatActivity {
 
+
+
     Toolbar toolbar;
 
     TextInputLayout titleLayout;
@@ -36,61 +35,51 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     Note note;
 
-    InputMethodManager imm;
-
     /**
-     *是否为新建Note
+     * 是否为新建Note
      */
     boolean isAdd;
+
+    /**
+     * 如果是修改Note，这个为NoteList的position
+     */
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
-        Window window = getWindow();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if(null != getIntent().getBundleExtra(Constant.ACTION_CHANGE_NOTE)) {
+        if (null != getIntent().getBundleExtra(Constant.ACTION_CHANGE_NOTE)) {
             note = getIntent().getBundleExtra(Constant.ACTION_CHANGE_NOTE)
                     .getParcelable(Constant.ACTION_CHANGE_NOTE);
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            position = getIntent().getIntExtra("position", -1);
         } else {
             note = new Note();
             isAdd = true;
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE |
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
 
         titleLayout = (TextInputLayout) findViewById(R.id.til_title);
         titleEdit = (EditText) findViewById(R.id.et_title);
-        titleEdit.setText(note.getTitle());
+        if(null != titleEdit) {
+            titleEdit.setText(note.getTitle());
+        }
         titleEdit.addTextChangedListener(new MyTextWatcher(titleEdit));
 
         contentLayout = (TextInputLayout) findViewById(R.id.til_content);
         contentEdit = (EditText) findViewById(R.id.et_content);
-        contentEdit.setText(note.getTextContent());
-        contentEdit.addTextChangedListener(new MyTextWatcher(contentEdit));
-        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(!isAdd) {
-            titleEdit.setEnabled(false);
-            contentEdit.setEnabled(false);
-            imm.hideSoftInputFromWindow(titleEdit.getWindowToken(), 0); //强制隐藏键盘
-        } else {
-            imm.showSoftInput(titleEdit, InputMethodManager.SHOW_FORCED);
+        if(null != contentEdit) {
+            contentEdit.setText(note.getTextContent());
         }
+        contentEdit.addTextChangedListener(new MyTextWatcher(contentEdit));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_note, menu);
-        if(!isAdd) {
-            MenuItem menuItem = menu.getItem(0);
-            menuItem.setTitle(R.string.action_edit);
-            menuItem.setIcon(R.drawable.ic_mode_edit_white_24dp);
-        }
         return true;
     }
 
@@ -104,21 +93,18 @@ public class CreateNoteActivity extends AppCompatActivity {
             case R.id.action_settings:
                 break;
             case R.id.action_save:
-                if(item.getTitle().equals(getString(R.string.action_save))) {
+                    if(!validateTitle() || !validateContent()) {
+                        return super.onOptionsItemSelected(item);
+                    }
                     NoteDB.saveNote(note);
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(Constant.ACTION_CHANGE_NOTE, note);
                     intent.putExtra(Constant.ACTION_CHANGE_NOTE, bundle);
+                    intent.putExtra("isAdd", isAdd);
+                    intent.putExtra("position", position);
                     setResult(RESULT_OK, intent);
                     finish();
-                } else {
-                    item.setIcon(R.drawable.ab_save);
-                    item.setTitle(R.string.action_save);
-                    titleEdit.setEnabled(true);
-                    contentEdit.setEnabled(true);
-                    requestFocus(titleEdit);
-                }
 
 //                View view = toolbar.findViewById(R.id.action_save);
 //                ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
@@ -131,28 +117,30 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private boolean validateTitle() {
         String title = titleEdit.getText().toString();
-        if(TextUtils.isEmpty(title.trim())) {
+        if (TextUtils.isEmpty(title.trim())) {
+            contentLayout.setError(null);
             titleLayout.setError(getString(R.string.title_error));
             requestFocus(titleEdit);
             return false;
         } else {
             titleLayout.setErrorEnabled(false);
+            note.setTitle(title);
+            return true;
         }
-        note.setTitle(title);
-        return true;
     }
 
     private boolean validateContent() {
         String content = contentEdit.getText().toString();
-        if(TextUtils.isEmpty(content.trim())) {
+        if (TextUtils.isEmpty(content.trim())) {
+            contentLayout.setError(null);
             contentLayout.setError(getString(R.string.content_error));
             requestFocus(contentEdit);
             return false;
         } else {
             contentLayout.setErrorEnabled(false);
+            note.setTextContent(content);
+            return true;
         }
-        note.setTextContent(content);
-        return true;
     }
 
     private void requestFocus(View view) {

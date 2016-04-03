@@ -17,11 +17,12 @@ import com.archer.note.constant.Constant;
 import com.archer.note.db.Note;
 import com.archer.note.db.NoteDB;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A fragment representing a list of Notes.
- * <p>
+ * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
@@ -58,7 +59,12 @@ public class NoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_list, container, false);
-        noteList = NoteDB.getAllNote();
+
+        if(NoteDB.getNoteCount() > 0) {
+            noteList = NoteDB.getAllNote();
+        } else {
+            noteList = new ArrayList<>();
+        }
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -81,8 +87,14 @@ public class NoteFragment extends Fragment {
         switch (requestCode) {
             case 0:
                 if (resultCode == Activity.RESULT_OK) {
-                    noteList.add((Note) data.getBundleExtra(Constant.ACTION_CHANGE_NOTE).getParcelable(Constant.ACTION_CHANGE_NOTE));
-                    myNoteRecyclerViewAdapter.notifyItemInserted(noteList.size() - 1);
+                    if (data.getBooleanExtra("isAdd", true)) {
+                        Note note = data.getBundleExtra(Constant.ACTION_CHANGE_NOTE).getParcelable(Constant.ACTION_CHANGE_NOTE);
+                        noteList.add(note);
+                        myNoteRecyclerViewAdapter.notifyItemInserted(noteList.size() - 1);
+                    } else {
+                        noteList.set(data.getIntExtra("position", -1), (Note) data.getBundleExtra(Constant.ACTION_CHANGE_NOTE).getParcelable(Constant.ACTION_CHANGE_NOTE));
+                        myNoteRecyclerViewAdapter.notifyItemChanged(data.getIntExtra("position", -1));
+                    }
                 }
         }
     }
@@ -109,7 +121,7 @@ public class NoteFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

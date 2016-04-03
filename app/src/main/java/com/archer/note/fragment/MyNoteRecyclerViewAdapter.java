@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.archer.note.R;
 import com.archer.note.db.Note;
 import com.archer.note.fragment.NoteFragment.OnListFragmentInteractionListener;
+import com.archer.note.util.DateUtil;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class MyNoteRecyclerViewAdapter extends RecyclerView.Adapter<MyNoteRecycl
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
         holder.mContentView.setText(mValues.get(position).getTextContent());
+        holder.mDateView.setText(DateUtil.date2String(mValues.get(position).getDate()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +61,7 @@ public class MyNoteRecyclerViewAdapter extends RecyclerView.Adapter<MyNoteRecycl
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        public final TextView mDateView;
         public Note mItem;
 
         public ViewHolder(View view) {
@@ -70,6 +73,7 @@ public class MyNoteRecyclerViewAdapter extends RecyclerView.Adapter<MyNoteRecycl
             }
             mIdView = (TextView) view.findViewById(R.id.note_name);
             mContentView = (TextView) view.findViewById(R.id.note_intro);
+            mDateView = (TextView) view.findViewById(R.id.note_date);
         }
 
         @Override

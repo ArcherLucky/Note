@@ -178,6 +178,7 @@ public class MainActivity extends BaseActivity
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constant.ACTION_CHANGE_NOTE, item);
         intent.putExtra(Constant.ACTION_CHANGE_NOTE, bundle);
+        intent.putExtra("position", position);
         startActivityForResult(intent, 0);
     }
 }

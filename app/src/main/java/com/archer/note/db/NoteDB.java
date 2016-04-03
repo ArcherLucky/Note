@@ -3,6 +3,7 @@ package com.archer.note.db;
 import com.archer.note.NoteApplication;
 import com.archer.note.R;
 
+import java.util.Date;
 import java.util.List;
 
 import de.greenrobot.dao.query.CountQuery;
@@ -56,6 +57,7 @@ public class NoteDB {
      * @param note 要保存的Note
      */
     private void _saveNote(Note note) {
+        note.setDate(new Date());
         daoSession.getNoteDao().insertOrReplace(note);
     }
 
@@ -83,6 +85,14 @@ public class NoteDB {
      */
     private List<Note> _getAllNote() {
         return daoSession.getNoteDao().loadAll();
+    }
+
+    /**
+     * 获取Note的数量
+     * @return
+     */
+    private long _getNoteCount() {
+        return daoSession.getNoteDao().queryBuilder().count();
     }
 
     /**
@@ -133,7 +143,7 @@ public class NoteDB {
             daoSession.runInTx(new Runnable() {
                 @Override
                 public void run() {
-                    for(int i = 0; i < list.size(); i++){
+                    for (int i = 0; i < list.size(); i++) {
                         NoteType noteType = list.get(i);
                         daoSession.getNoteTypeDao().delete(noteType);
                     }
@@ -187,6 +197,12 @@ public class NoteDB {
     public static void saveNotes(final List<Note> list) {
         getInstance()._saveNotes(list);
     }
+
+    /** 对外的_getNoteCount方法 */
+    public static long getNoteCount() {
+        return getInstance()._getNoteCount();
+    }
+
 
     /** 对外的_getAllNote方法 */
     public static List<Note> getAllNote() {

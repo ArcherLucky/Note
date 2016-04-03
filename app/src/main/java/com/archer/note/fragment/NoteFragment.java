@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.archer.note.R;
 import com.archer.note.constant.Constant;
@@ -32,6 +33,7 @@ public class NoteFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    TextView tvEmptyTip;
     MyNoteRecyclerViewAdapter myNoteRecyclerViewAdapter;
     List<Note> noteList;
 
@@ -59,10 +61,11 @@ public class NoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_list, container, false);
-
+        tvEmptyTip = (TextView) view.findViewById(R.id.tv_empty_tip);
         if(NoteDB.getNoteCount() > 0) {
             noteList = NoteDB.getAllNote();
         } else {
+            tvEmptyTip.setVisibility(View.VISIBLE);
             noteList = new ArrayList<>();
         }
 
@@ -87,6 +90,7 @@ public class NoteFragment extends Fragment {
         switch (requestCode) {
             case 0:
                 if (resultCode == Activity.RESULT_OK) {
+                    tvEmptyTip.setVisibility(View.GONE);
                     if (data.getBooleanExtra("isAdd", true)) {
                         Note note = data.getBundleExtra(Constant.ACTION_CHANGE_NOTE).getParcelable(Constant.ACTION_CHANGE_NOTE);
                         noteList.add(note);
